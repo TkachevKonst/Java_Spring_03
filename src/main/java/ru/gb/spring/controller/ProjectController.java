@@ -11,6 +11,7 @@ import ru.gb.spring.service.TimesheetService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -27,7 +28,12 @@ public class ProjectController {
     }
     @GetMapping("/{id}/timesheets")
     public ResponseEntity<List<Timesheet>> getAllTimesheetsProject (@PathVariable Long id){
-        return ResponseEntity.ok(projectServise.getAllTimesheetsProject(id));
+        try {
+            return ResponseEntity.ok(projectServise.getAllTimesheetsProject(id));
+        } catch (NoSuchElementException e){
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @GetMapping("/{id}")
@@ -53,6 +59,7 @@ public class ProjectController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
+        projectServise.delete(id);
         return ResponseEntity.noContent().build();
     }
 
