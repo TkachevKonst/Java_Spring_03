@@ -4,6 +4,7 @@ package ru.gb.spring.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "employee")
@@ -13,9 +14,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
-
-    private List<Long> projectId;
-    private List<Long> timesheetId;
+    private Set<Long> timesheetId;
 
     public Long getId() {
         return id;
@@ -33,19 +32,11 @@ public class Employee {
         this.name = name;
     }
 
-    public List<Long> getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(List<Long> projectId) {
-        this.projectId = projectId;
-    }
-
-    public List<Long> getTimesheetId() {
+    public Set<Long> getTimesheetId() {
         return timesheetId;
     }
 
-    public void setTimesheetId(List<Long> timesheetId) {
+    public void setTimesheetId(Set<Long> timesheetId) {
         this.timesheetId = timesheetId;
     }
 }

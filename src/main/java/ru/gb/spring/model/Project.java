@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "project")
@@ -15,7 +16,7 @@ public class Project {
     private Long id;
     private String name;
     private LocalDate createdAt;
-    private List<Long> employee;
+    private Set<Long> employee;
 
     public Long getId() {
         return id;
@@ -41,11 +42,11 @@ public class Project {
         this.createdAt = createdAt;
     }
 
-    public List<Long> getEmployee() {
+    public Set<Long> getEmployee() {
         return employee;
     }
 
-    public void setEmployee(List<Long> employee) {
+    public void setEmployee(Set<Long> employee) {
         this.employee = employee;
     }
 }

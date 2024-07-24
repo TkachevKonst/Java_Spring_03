@@ -9,9 +9,7 @@ import ru.gb.spring.model.Timesheet;
 import ru.gb.spring.repository.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SpringBootApplication
@@ -22,8 +20,9 @@ public class Application {
 		ProjectRepositoryDb projectRepo = ctx.getBean(ProjectRepositoryDb.class);
 		Random random = new Random();
 		LocalDate createdAt = LocalDate.now();
+
 		for (int i = 1; i <= 5; i++) {
-			List<Long> employees = new ArrayList<>();
+			Set<Long> employees = new HashSet<>();
 			employees.add(random.nextLong(1,11));
 			employees.add(random.nextLong(1,11));
 			employees.add(random.nextLong(1,11));
@@ -31,7 +30,6 @@ public class Application {
 			Project project = new Project();
 			project.setName("Project #" + i);
 			project.setCreatedAt(createdAt);
-			project.setEmployee(employees);
 			projectRepo.save(project);
 		}
 
@@ -50,18 +48,14 @@ public class Application {
 
 		EmployeeRepositoryDb employeeRepository = ctx.getBean(EmployeeRepositoryDb.class);
 		for (int i = 1; i <= 10; i++) {
-			List<Long> timesheets = new ArrayList<>();
-			List<Long> projects = new ArrayList<>();
-			projects.add(random.nextLong(1,6));
-			projects.add(random.nextLong(1,6));
-			projects.add(random.nextLong(1,6));
+			Set<Long> timesheets = new HashSet<>();
 			timesheets.add(random.nextLong(1,11));
 			timesheets.add(random.nextLong(1,11));
 			timesheets.add(random.nextLong(1,11));
 			timesheets.add(random.nextLong(1,11));
 			Employee employee = new Employee();
 			employee.setName("Employee" + i);
-			employee.setProjectId(projects);
+
 			employee.setTimesheetId(timesheets);
 			employeeRepository.save(employee);
 
