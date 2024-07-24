@@ -1,12 +1,19 @@
 package ru.gb.spring.model;
 
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "timesheet")
 public class Timesheet {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private Long projectID;
-    private  int minutes;
+    private Integer minutes;
     private LocalDate createdAt;
 
     public Long getId() {
@@ -29,7 +36,7 @@ public class Timesheet {
         return minutes;
     }
 
-    public void setMinutes(int minutes) {
+    public void setMinutes(Integer minutes) {
         this.minutes = minutes;
     }
 

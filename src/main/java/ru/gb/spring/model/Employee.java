@@ -1,21 +1,21 @@
 package ru.gb.spring.model;
 
+
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "project")
-public class Project {
-
+@Table(name = "employee")
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
-    private LocalDate createdAt;
-    private List<Long> employee;
+
+    private List<Long> projectId;
+    private List<Long> timesheetId;
 
     public Long getId() {
         return id;
@@ -33,19 +33,19 @@ public class Project {
         this.name = name;
     }
 
-    public LocalDate getCreatedAt() {
-        return createdAt;
+    public List<Long> getProjectId() {
+        return projectId;
     }
 
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
+    public void setProjectId(List<Long> projectId) {
+        this.projectId = projectId;
     }
 
-    public List<Long> getEmployee() {
-        return employee;
+    public List<Long> getTimesheetId() {
+        return timesheetId;
     }
 
-    public void setEmployee(List<Long> employee) {
-        this.employee = employee;
+    public void setTimesheetId(List<Long> timesheetId) {
+        this.timesheetId = timesheetId;
     }
 }
