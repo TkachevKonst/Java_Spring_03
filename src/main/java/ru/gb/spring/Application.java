@@ -3,9 +3,7 @@ package ru.gb.spring;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import ru.gb.spring.model.Employee;
-import ru.gb.spring.model.Project;
-import ru.gb.spring.model.Timesheet;
+import ru.gb.spring.model.*;
 import ru.gb.spring.repository.*;
 
 import java.time.LocalDate;
@@ -20,6 +18,70 @@ public class Application {
 		ProjectRepositoryDb projectRepo = ctx.getBean(ProjectRepositoryDb.class);
 		Random random = new Random();
 		LocalDate createdAt = LocalDate.now();
+
+
+		UserRepository userRepository = ctx.getBean(UserRepository.class);
+		User admin = new User();
+		admin.setLogin("admin");
+		admin.setPassword("admin");
+		User user = new User();
+		user.setLogin("user");
+		user.setPassword("user");
+		User rest = new User();
+		rest.setLogin("rest");
+		rest.setPassword("rest");
+		admin = userRepository.save(admin);
+		user = userRepository.save(user);
+		rest = userRepository.save(rest);
+
+		List<User> users1 = new ArrayList<>();
+		List<User> users2 = new ArrayList<>();
+		List<User> users3 = new ArrayList<>();
+
+		users1.add(admin);
+		users2.add(admin);
+		users2.add(user);
+		users3.add(rest);
+
+		RoleRepository roleRepository = ctx.getBean(RoleRepository.class);
+		Role adminRole = new Role();
+		adminRole.setName("ADMIN");
+		adminRole.setUsers(users1);
+		Role restRole = new Role();
+		restRole.setName("REST");
+		restRole.setUsers(users3);
+		Role userRole = new Role();
+		userRole.setName("USER");
+		userRole.setUsers(users2);
+
+		adminRole = roleRepository.save(adminRole);
+		userRole = roleRepository.save(userRole);
+		restRole = roleRepository.save(restRole);
+
+		List<Role> roles1 = new ArrayList<>();
+		List<Role> roles2 = new ArrayList<>();
+		List<Role> roles3 = new ArrayList<>();
+		roles1.add(adminRole);
+		roles1.add(userRole);
+		roles2.add(userRole);
+		roles3.add(restRole);
+
+		admin.setRoles(roles1);
+		user.setRoles(roles2);
+		rest.setRoles(roles3);
+
+		userRepository.save(admin);
+		userRepository.save(user);
+		userRepository.save(rest);
+
+		roleRepository.save(adminRole);
+		roleRepository.save(userRole);
+		roleRepository.save(restRole);
+
+
+
+
+
 
 		for (int i = 1; i <= 5; i++) {
 			Set<Long> employees = new HashSet<>();
