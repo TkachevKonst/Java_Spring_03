@@ -2,6 +2,8 @@ package ru.gb.spring.service;
 
 
 import org.springframework.stereotype.Service;
+import ru.gb.spring.aspect.ExceptionType;
+import ru.gb.spring.aspect.TypeArgument;
 import ru.gb.spring.model.Timesheet;
 import ru.gb.spring.repository.ProjectRepository;
 import ru.gb.spring.repository.ProjectRepositoryDb;
@@ -14,6 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
+@ExceptionType
 @Service
 public class TimesheetService {
     private final ProjectRepositoryDb projectRepository;
@@ -23,12 +26,13 @@ public class TimesheetService {
         this.timesheetRepository = timesheetRepository;
         this.projectRepository = projectRepository;
     }
-
+    @TypeArgument
     public Optional<Timesheet> getByID(Long id) {
         return timesheetRepository.findById(id);
     }
 
     public List<Timesheet> getALl() {
+
         return timesheetRepository.findAll();
     }
 
