@@ -36,7 +36,7 @@ public class TimesheetService {
 
     public List<Timesheet> getALl() {
         try {
-            throw new Exception();
+            throw new Exception("Опять");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
