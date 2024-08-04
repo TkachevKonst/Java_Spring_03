@@ -27,6 +27,7 @@ public class TypeArgumentAspect {
         Object target = jp.getTarget();
         MethodSignature methodSignature = (MethodSignature) jp.getSignature();
         Method method = methodSignature.getMethod();
+        method.getReturnType();
         boolean enabled = true;
         if (method.isAnnotationPresent(TypeArgument.class)){
             enabled = method.getAnnotation(TypeArgument.class).enabled();

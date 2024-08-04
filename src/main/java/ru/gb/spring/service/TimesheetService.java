@@ -1,11 +1,12 @@
 package ru.gb.spring.service;
 
 
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
-import ru.gb.spring.aspect.ExceptionType;
+//import ru.gb.spring.aspect.ExceptionType;
 import ru.gb.spring.aspect.TypeArgument;
 import ru.gb.spring.model.Timesheet;
-import ru.gb.spring.repository.ProjectRepository;
+
 import ru.gb.spring.repository.ProjectRepositoryDb;
 import ru.gb.spring.repository.TimesheetRepository;
 import ru.gb.spring.repository.TimesheetRepositoryDb;
@@ -16,7 +17,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
-@ExceptionType
+
 @Service
 public class TimesheetService {
     private final ProjectRepositoryDb projectRepository;
@@ -31,9 +32,15 @@ public class TimesheetService {
         return timesheetRepository.findById(id);
     }
 
-    public List<Timesheet> getALl() {
 
-        return timesheetRepository.findAll();
+
+    public List<Timesheet> getALl() {
+        try {
+            throw new Exception();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        //return timesheetRepository.findAll();
     }
 
     public Timesheet create(Timesheet timesheet) {
