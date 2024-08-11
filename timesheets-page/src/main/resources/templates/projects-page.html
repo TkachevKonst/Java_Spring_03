@@ -21,7 +21,7 @@
     <tbody>
     <tr th:each="project : ${projects}">
         <td><span th:text="${project.id}"></span></td>
-        <td><a th:href="@{'/home/projects/{id}'(id=${project.id})}"><span th:text="${project.name}"></span></a></td>
+        <td><a th:href="@{'/projects/{id}'(id=${project.id})}"><span th:text="${project.name}"></span></a></td>
         <td><span th:text="${project.createdAt}"></span></td>
     </tr>
     </tbody>

@@ -51,6 +51,7 @@ public class TimesheetController {
     @Operation(summary = "Delete Timesheet", description = "Удалить расписание по индефикатору")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable @Parameter(description = "Индефикатор расписания") Long id) {
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 

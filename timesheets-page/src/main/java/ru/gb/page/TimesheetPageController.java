@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/home/timesheets")
+@RequestMapping("/timesheets")
 public class TimesheetPageController {
 
     private final TimesheetPageService timesheetPageService;

@@ -33,12 +33,7 @@ public class TimesheetService {
 
 
     public List<Timesheet> getALl() {
-        try {
-            throw new Exception("Опять");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        //return timesheetRepository.findAll();
+        return timesheetRepository.findAll();
     }
 
     public Timesheet create(Timesheet timesheet) {
@@ -46,7 +41,7 @@ public class TimesheetService {
             throw new IllegalArgumentException("projectID не заполнены");
         }
         if (projectRepository.findById(timesheet.getProjectID()).isEmpty()){
-            throw new NoSuchElementException("Проект с id" + timesheet.getProjectID() + "отсутствует");
+            throw new NoSuchElementException("Проект с id " + timesheet.getProjectID() + "отсутствует");
         }
         timesheet.setCreatedAt(LocalDate.now());
         return timesheetRepository.save(timesheet);

@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/home/projects")
+@RequestMapping("/projects")
 public class ProjectPageController {
 
     private final ProjectPageService projectPageService;

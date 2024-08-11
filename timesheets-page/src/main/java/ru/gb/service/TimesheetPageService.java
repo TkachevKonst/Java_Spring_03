@@ -4,6 +4,8 @@ package ru.gb.service;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClient;
 import ru.gb.client.ProjectsResponse;
 import ru.gb.client.TimesheetsResponse;
@@ -28,21 +30,31 @@ public class TimesheetPageService {
     }
 
     private RestClient restClient(){
-        List<ServiceInstance> instances = discoveryClient.getInstances("TIMESHEETS-REST");
+        List<ServiceInstance> instances = discoveryClient.getInstances("TIMESHEET-REST");
         int instancesCount = instances.size();
         int instanceIndex = ThreadLocalRandom.current().nextInt(0, instancesCount);
 
         ServiceInstance instance = instances.get(instanceIndex);
-        String uri = "hhtp://" + instance.getHost() + ":" + instance.getPort();
+        String uri = "http://" + instance.getHost() + ":" + instance.getPort();
         return RestClient.create(uri);
     }
     public List<TimesheetPageDto> findAll(){
         List<TimesheetsResponse> timesheetsResponses = null;
-        timesheetsResponses = restClient().get()
-                .uri("/timesheets")
-                .retrieve()
-                .body(new org.springframework.core.ParameterizedTypeReference<List<TimesheetsResponse>>() {
-                });
+        int attempts = 5;
+        while (attempts-- > 0) {
+            try {
+                timesheetsResponses = restClient().get()
+                        .uri("/timesheets")
+                        .retrieve()
+                        .body(new org.springframework.core.ParameterizedTypeReference<List<TimesheetsResponse>>() {
+                        });
+                break;
+            }catch (HttpServerErrorException e){
+            }
+        }
+        if (timesheetsResponses == null){
+            throw new RuntimeException("ВСЕ");
+        }
 
         List<TimesheetPageDto> pageDtos = new ArrayList<>();
         for (TimesheetsResponse timesheet : timesheetsResponses){
@@ -52,36 +64,42 @@ public class TimesheetPageService {
             timesheetPageDto.setCreatedAt(timesheet.getCreatedAt().format(DateTimeFormatter.ISO_DATE));
 
             ProjectsResponse projectsResponse = restClient().get()
-                    .uri("/proprojects/"+timesheet.getProjectID())
+                    .uri("/projects/"+timesheet.getProjectID())
                     .retrieve()
                     .body(ProjectsResponse.class);
             timesheetPageDto.setProjectName(projectsResponse.getName());
             timesheetPageDto.setProjectId(timesheet.getProjectID());
+            pageDtos.add(timesheetPageDto);
         }
         return pageDtos;
     }
 
 
     public Optional<TimesheetPageDto> findById (Long id){
-        TimesheetsResponse timesheetsResponse = restClient().get()
-                .uri("/timesheets/"+id)
-                .retrieve()
-                .body(TimesheetsResponse.class);
+        try {
+            TimesheetsResponse timesheetsResponse = restClient().get()
+                    .uri("/timesheets/" + id)
+                    .retrieve()
+                    .body(TimesheetsResponse.class);
 
-        TimesheetPageDto timesheetPageDto = new TimesheetPageDto();
-        timesheetPageDto.setId(String.valueOf(timesheetsResponse.getId()));
-        timesheetPageDto.setMinutes(String.valueOf(timesheetsResponse.getMinutes()));
-        timesheetPageDto.setCreatedAt(timesheetsResponse.getCreatedAt().format(DateTimeFormatter.ISO_DATE));
+            TimesheetPageDto timesheetPageDto = new TimesheetPageDto();
+            timesheetPageDto.setId(String.valueOf(timesheetsResponse.getId()));
+            timesheetPageDto.setMinutes(String.valueOf(timesheetsResponse.getMinutes()));
+            timesheetPageDto.setCreatedAt(timesheetsResponse.getCreatedAt().format(DateTimeFormatter.ISO_DATE));
 
-        ProjectsResponse projectsResponse = restClient().get()
-                .uri("/proprojects/"+timesheetsResponse.getProjectID())
-                .retrieve()
-                .body(ProjectsResponse.class);
-        timesheetPageDto.setProjectName(projectsResponse.getName());
-        timesheetPageDto.setProjectId(timesheetsResponse.getProjectID());
+            ProjectsResponse projectsResponse = restClient().get()
+                    .uri("/projects/" + timesheetsResponse.getProjectID())
+                    .retrieve()
+                    .body(ProjectsResponse.class);
+            timesheetPageDto.setProjectName(projectsResponse.getName());
+            timesheetPageDto.setProjectId(timesheetsResponse.getProjectID());
 
-        return Optional.of(timesheetPageDto);
+            return Optional.of(timesheetPageDto);
+        }catch (HttpClientErrorException.NotFound e){
+            return Optional.empty();
+        }
     }
+
 
 
 
