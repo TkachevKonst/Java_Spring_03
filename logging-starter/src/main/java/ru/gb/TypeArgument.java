@@ -1,4 +1,4 @@
-package ru.gb.aspect;
+package ru.gb;
 
 
 import java.lang.annotation.ElementType;

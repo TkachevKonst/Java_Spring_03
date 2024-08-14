@@ -1,4 +1,4 @@
-package ru.gb.aspect;
+package ru.gb;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,11 +15,18 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 public class LoggingAspect {
-    @Pointcut("@annotation(ru.gb.spring.aspect.TypeArgument)")
+
+    private final LoggingProperties loggingProperties;
+
+    public LoggingAspect(LoggingProperties loggingProperties) {
+        this.loggingProperties = loggingProperties;
+    }
+
+    @Pointcut("@annotation(ru.gb.TypeArgument)")
     public void typeArgumentMethodsPointcut() {
     }
 
-    @Pointcut("@annotation(ru.gb.spring.aspect.TypeArgument)")
+    @Pointcut("@annotation(ru.gb.TypeArgument)")
     public void typeArgumentTypePointcut() {
     }
 
@@ -43,7 +50,9 @@ public class LoggingAspect {
             for (int i = 0; i < nameClassArguments.length; i++) {
                 builder.append("Argumets " + nameClassArguments[i].getClass().getSimpleName() + " - Value: " + nameClassArguments[i].toString() + "\n");
             }
-            log.info("Type {} , Method {}: {}", target.getClass().getSimpleName(), jp.getSignature().getName(), builder);
+            if (loggingProperties.isPrintArgs()) {
+                log.atLevel(loggingProperties.getLevel()).log("Type {} , Method {}, Argument {}", target.getClass().getSimpleName(), jp.getSignature().getName(), builder);
+            }else log.atLevel(loggingProperties.getLevel()).log("Type {} , Method {}", target.getClass().getSimpleName(), jp.getSignature().getName());
         }
     }
 

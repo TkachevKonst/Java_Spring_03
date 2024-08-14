@@ -25,6 +25,8 @@
         <module>timesheets-rest</module>
         <module>timesheets-page</module>
         <module>eurika-server</module>
+        <module>logging-starter</module>
+        <module>exception-type</module>
     </modules>
     <scm>
         <connection/>

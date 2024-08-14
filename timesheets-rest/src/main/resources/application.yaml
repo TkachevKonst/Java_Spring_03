@@ -1,3 +1,10 @@
+application:
+  logging:
+    enabled: true
+    level: WARN
+    print-args: false
+  exception:
+    enabled: true
 server:
   port: 8080
 spring:

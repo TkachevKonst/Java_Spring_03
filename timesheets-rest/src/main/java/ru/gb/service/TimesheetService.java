@@ -1,9 +1,10 @@
 package ru.gb.service;
 
 
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
-import ru.gb.aspect.TypeArgument;
+
+import ru.gb.ExceptionType;
+import ru.gb.TypeArgument;
 import ru.gb.model.Timesheet;
 import ru.gb.repository.ProjectRepositoryDb;
 import ru.gb.repository.TimesheetRepositoryDb;
@@ -31,7 +32,7 @@ public class TimesheetService {
     }
 
 
-
+@ExceptionType
     public List<Timesheet> getALl() {
         return timesheetRepository.findAll();
     }

@@ -1,3 +1,8 @@
+application:
+  logging:
+    enabled: true
+    level: WARN
+    print-args: true
 spring:
   application:
     name: timesheets-rest
